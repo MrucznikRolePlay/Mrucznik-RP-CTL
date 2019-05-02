@@ -1,10 +1,7 @@
 from __future__ import print_function, unicode_literals
-import sys
-import re
-import glob
 import os
 import json
-import regex
+import re
 from jinja2 import Environment, PackageLoader, select_autoescape
 from argparse import ArgumentParser
 from PyInquirer import prompt, print_json
