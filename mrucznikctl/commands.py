@@ -1,11 +1,14 @@
+import datetime
 import os
 import json
+import getpass
 from PyInquirer import prompt
 
 from mrucznikctl.config import groups, parameterTypes, get_default_parameter_description, get_default_parameter_name
 from mrucznikctl.validators import NameValidator, VariableValidator
 
 
+# --- entry point ---
 def create_command(args):
     print('Witaj w narzędziu tworzącym komendę dla mapy Mrucznik Role Play')
 
@@ -14,7 +17,7 @@ def create_command(args):
     if not os.path.exists(command['name']):
         os.mkdir(command['name'])
 
-    command_name = '{0}/{0}.json'.format(command['name'])
+    command_name = '{0}/command.json'.format(command['name'])
     with open(command_name, 'w') as file:
         json.dump(command, file, indent=4)
     print('Komenda pomyślnie utworzona jako plik {}'.format(command_name))
@@ -22,6 +25,7 @@ def create_command(args):
     return command
 
 
+# --- functions ---
 def command_creator():
     questions = [
         {
@@ -44,7 +48,8 @@ def command_creator():
         {
             'type': 'input',
             'name': 'author',
-            'message': 'Kto jest autorem komendy?'
+            'message': 'Kto jest autorem komendy?',
+            'default': getpass.getuser()
         },
         {
             'type': 'confirm',
@@ -73,6 +78,7 @@ def command_creator():
     else:
         answers['parameters'] = []
 
+    answers['date'] = datetime.datetime.now().strftime("%d.%m.%Y")
     return answers
 
 

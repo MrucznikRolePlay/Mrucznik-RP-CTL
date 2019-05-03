@@ -1,6 +1,5 @@
 from argparse import ArgumentParser
 
-from mrucznikctl.checking import check_configuration
 from mrucznikctl.code_generation import generate_code
 from mrucznikctl.commands import create_command
 from mrucznikctl.modules import create_module
@@ -27,11 +26,6 @@ def main():
     parser_build = subparsers.add_parser('build', description='Generuje kod na podstawie plików json.',
                                          help='- generowanie kodu')
     parser_build.set_defaults(func=generate_code)
-
-    # --- ensure ---
-    parser_build = subparsers.add_parser('check', description='Sprawdza, czy konfiguracja mapy jest poprawna.',
-                                         help='- sprawdzanie konfiguracji')
-    parser_build.set_defaults(func=check_configuration)
 
     # parse arguments
     args = parser.parse_args()

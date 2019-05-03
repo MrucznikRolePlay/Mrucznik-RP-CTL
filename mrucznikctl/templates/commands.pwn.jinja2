@@ -19,10 +19,12 @@
 // Kod wygenerowany automatycznie narzędziem Mrucznik CTL
 
 //-------<[ include ]>-------
-{% for command in commands %}#include "{{command.name}}/{{command.name}}.pwn"{% endfor %}
+{% for command in commands %}#include "{{command}}\{{command}}.pwn"
+{% endfor %}
 
 //-------<[ initialize ]>-------
 hook OnGameModeInit()
 {
-    {% for command in commands %}command_{{command.name}}();{% endfor %}
+    {% for command in commands %}command_{{command}}();
+    {% endfor %}
 }

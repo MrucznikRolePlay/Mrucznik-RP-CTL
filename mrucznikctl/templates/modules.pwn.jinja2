@@ -19,13 +19,17 @@
 // Kod wygenerowany automatycznie narzędziem Mrucznik CTL
 
 //-------<[ .def ]>-------
-{% for module in modules %}}#include "{{module.name}}.def"{% endfor %}}
+{% for module in modules %}#include "{{module}}\{{module}}.def"
+{% endfor %}
 
 //-------<[ .hwn ]>-------
-{% for module in modules %}}#include "{{module.name}}.hwn"{% endfor %}}
+{% for module in modules %}#include "{{module}}\{{module}}.hwn"
+{% endfor %}
 
 //-------<[ .pwn ]>-------
-{% for module in modules %}}#include "{{module.name}}.pwn"{% endfor %}}
+{% for module in modules %}#include "{{module}}\{{module}}.pwn"
+{% endfor %}
 
 //-------<[ .commands ]>-------
-{% for module in modules %}}#include "{{module.name}}/commands/commands.pwn"{% endfor %}}
+{% for module in modules %}#include "{{module}}\commands\commands.pwn"
+{% endfor %}

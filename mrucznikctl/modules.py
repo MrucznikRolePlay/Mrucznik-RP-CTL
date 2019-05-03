@@ -1,4 +1,7 @@
 import json
+import os
+import getpass
+import datetime
 from PyInquirer import prompt
 
 from mrucznikctl.code_generation import generate_module
@@ -6,6 +9,7 @@ from mrucznikctl.commands import create_command
 from mrucznikctl.validators import NameValidator
 
 
+# --- entry point ---
 def create_module(args):
     print('Witaj w narzędziu tworzącym moduł mapy Mrucznik Role Play')
 
@@ -24,7 +28,8 @@ def create_module(args):
         {
             'type': 'input',
             'name': 'author',
-            'message': 'Kto jest autorem modułu?'
+            'message': 'Kto jest autorem modułu?',
+            'default': getpass.getuser()
         },
         {
             'type': 'confirm',
@@ -34,22 +39,27 @@ def create_module(args):
     ]
 
     answers = prompt(questions)
-    want_commands = answers.pop('commands')
+    answers['date'] = datetime.datetime.now().strftime("%d.%m.%Y")
 
     with open('module.json', 'w') as file:
         json.dump(answers, file, indent=4)
+        print('Moduł pomyślnie utworzony jako plik module.json')
 
-    print('Moduł pomyślnie utworzony jako plik module.json')
-    print('Uruchamiam generator modułu...')
-    generate_module(answers)
+    if answers.pop('commands'):
+        if not os.path.exists('commands'):
+            os.mkdir('commands')
 
-    if want_commands:
-        answers['commands'] = []
+        os.chdir('commands')
         next_element = True
         while next_element:
-            answers['commands'].append(create_command(args)['name'])
+            create_command(args)
             next_element = prompt([{
                 'type': 'confirm',
                 'name': 'next',
                 'message': 'Czy chcesz dodać kolejną komendę?'
             }])['next']
+        print('Pomyślnie utworzono pliki konfiguracyjne komendy')
+
+    print('Uruchamiam generator modułu...')
+    generate_module('module.json')
+    print('Gotowe. Możesz zacząć skrypcić ;)')

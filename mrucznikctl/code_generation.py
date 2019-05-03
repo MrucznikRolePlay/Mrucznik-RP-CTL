@@ -1,6 +1,8 @@
 import json
 import os
 from jinja2 import Environment, PackageLoader
+
+from mrucznikctl.cd import cd
 from mrucznikctl.config import parameterVariablePrefixes, parameterSymbols
 
 env = Environment(
@@ -8,40 +10,66 @@ env = Environment(
 )
 
 
-# --- entrypoint ---
+# --- entry point ---
 def generate_code(args):
-    with open('kick.json') as commandFile:
-        command_json = json.load(commandFile)
-        prepare_parameters(command_json['parameters'])
-        generate_command(command_json)
-    print('Komenda poprawnie wygenerowana')
+    if os.path.exists('modules'):
+        with cd('modules'):
+            generate_from_template('modules.pwn.jinja2', generate_modules(), 'modules.pwn', True)
+        print('Moduły zostały poprawnie wygenerowane.')
+    elif os.path.exists('module.json'):
+        generate_module('module.json')
+        print('Moduł został poprawnie wygenerowany.')
+    elif os.path.exists('command.json'):
+        generate_command('command.json')
+        print('Komenda została poprawnie wygenerowana.')
+    else:
+        print('Nie znajdujesz się w katalogu z plikiem command.json lub module.json')
 
 
 # --- functions ---
-def generate_command(data):
-    command_name = data['name']
+def generate_command(file):
+    with open(file) as command_file:
+        data = json.load(command_file)
+        prepare_parameters(data['parameters'])
+        command_name = data['name']
 
-    env.get_template('command.pwn.jinja2').stream(data).dump('./{0}/{0}.pwn'.format(command_name))
-
-    command_impl_path = './{0}/{0}_impl.pwn'.format(command_name)
-    if not os.path.exists(command_impl_path):
-        env.get_template('command_impl.pwn.jinja2').stream(data).dump(command_impl_path)
-
-
-def generate_module(data):
-    module_name = data['name']
-    if not os.path.exists(module_name):
-        env.get_template('module.def.jinja2').stream(data).dump('module.def')
-        env.get_template('module.hwn.jinja2').stream(data).dump('module.hwn')
-        env.get_template('module.pwn.jinja2').stream(data).dump('module.pwn')
+        generate_from_template('command.pwn.jinja2', data, '{0}.pwn'.format(command_name), force=True)
+        generate_from_template('command_impl.pwn.jinja2', data, '{0}_impl.pwn'.format(command_name))
+        return command_name
 
 
-def generate_modules_inc():
-    print('generate command')
+def generate_module(file):
+    with open(file) as module_file:
+        data = json.load(module_file)
+        print('Generowanie plików modułu {}'.format(data['name']))
+
+        generate_from_template('module.def.jinja2', data, '{}.def'.format(data['name']))
+        generate_from_template('module.hwn.jinja2', data, '{}.hwn'.format(data['name']))
+        generate_from_template('module.pwn.jinja2', data, '{}.pwn'.format(data['name']))
+
+        if data['commands']:
+            print('Generowanie komend:')
+            commands = []
+            for r, d, f in os.walk('commands'):
+                if 'command.json' in f:
+                    with cd(r):
+                        commands.append(generate_command('command.json'))
+            generate_commands_inc({'commands': commands})
+        return data['name']
 
 
-def generate_commands_inc():
-    print('generate command')
+def generate_modules():
+    modules = []
+    for r, d, f in os.walk('.'):
+        if 'module.json' in f:
+            with cd(r):
+                modules.append(generate_module('module.json'))
+    return {'modules': modules}
+
+
+def generate_commands_inc(data):
+    with cd('commands'):
+        generate_from_template('commands.pwn.jinja2', data, 'commands.pwn', force=True)
 
 
 def prepare_parameters(parameters):
@@ -64,3 +92,11 @@ def generate_parameter_symbol(parameter):
     if 'size' in parameter:
         symbol = '{}[{}]'.format(symbol, parameter['size'])
     return symbol
+
+
+def generate_from_template(template, data, target_file, force=False):
+    if force or not os.path.exists(target_file):
+        print('Generowanie pliku ' + target_file)
+        env.get_template(template).stream(data).dump(target_file)
+    else:
+        print('Plik ' + target_file + ' jest już wygenerowany, pomijam.')
