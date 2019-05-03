@@ -19,7 +19,7 @@ def create_command(args):
 
     command_name = '{0}/command.json'.format(command['name'])
     with open(command_name, 'w') as file:
-        json.dump(command, file, indent=4)
+        json.dump(command, file, indent=4, ensure_ascii=False)
     print('Komenda pomyślnie utworzona jako plik {}'.format(command_name))
 
     return command

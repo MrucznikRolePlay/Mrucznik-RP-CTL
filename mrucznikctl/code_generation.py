@@ -98,6 +98,6 @@ def generate_parameter_symbol(parameter):
 def generate_from_template(template, data, target_file, force=False):
     if force or not os.path.exists(target_file):
         print('Generowanie pliku ' + target_file)
-        env.get_template(template).stream(data).dump(target_file)
+        env.get_template(template).stream(data).dump(target_file, encoding='windows-1250')
     else:
         print('Plik ' + target_file + ' jest już wygenerowany, pomijam.')
