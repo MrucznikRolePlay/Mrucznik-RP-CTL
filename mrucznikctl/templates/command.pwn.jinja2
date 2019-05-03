@@ -27,14 +27,10 @@ command_{{name}}()
     new command = Command_GetId({{name}})
 
     //aliases
-    {% for alias in aliases %}
-    Command_AddAlt(command, "{{alias}}");
-    {% endfor %}
+    {% for alias in aliases %}Command_AddAlt(command, "{{alias}}");{% endfor %}
 
     //permissions
-    {% for permission in permissions %}
-    Group_SetCommand(Group_GetID("{{permission}}"), command, true);
-    {% endfor %}
+    {% for permission in permissions %}Group_SetCommand(Group_GetID("{{permission}}"), command, true);{% endfor %}
 }
 
 //-------<[ command ]>-------

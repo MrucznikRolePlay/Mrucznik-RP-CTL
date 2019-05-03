@@ -3,7 +3,7 @@ Command line tool for generating code for Mrucznik Role Play gamemode
 """
 from setuptools import find_packages, setup
 
-dependencies = ['jinja2', 'argparse', 'PyInquirer']
+dependencies = ['jinja2', 'PyInquirer']
 
 
 setup(
