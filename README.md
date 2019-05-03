@@ -1,4 +1,4 @@
-# mrucznikctl
+![Logo](logo.png)
 
 Command line tool for generating code for Mrucznik Role Play gamemode
 
