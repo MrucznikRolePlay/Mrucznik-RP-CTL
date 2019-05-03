@@ -56,7 +56,7 @@ YCMD:{{name}}(playerid, params[], help)
     {% for parameter in parameters %}{% if parameter.type=='player' -%}
     if(!IsPlayerConnected({{parameter.name}}))
     {
-        SendInvalidPlayerMessage(playerid);
+        sendErrorMessage(playerid, "Nie znaleziono gracza o nicku/id podanym w parametrze");
         return 1;
     }
     {% endif %}{% endfor %}
