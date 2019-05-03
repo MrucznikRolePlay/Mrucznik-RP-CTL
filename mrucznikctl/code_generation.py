@@ -34,7 +34,8 @@ def generate_command():
         prepare_parameters(data['parameters'])
         command_name = data['name']
 
-        generate_from_template('command.pwn.jinja2', data, '{0}.pwn'.format(command_name), force=True)
+        force = True if 'custom' in data else False
+        generate_from_template('command.pwn.jinja2', data, '{0}.pwn'.format(command_name), force)
         generate_from_template('command_impl.pwn.jinja2', data, '{0}_impl.pwn'.format(command_name))
         return command_name
 
