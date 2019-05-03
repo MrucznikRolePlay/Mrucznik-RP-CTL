@@ -53,6 +53,13 @@ YCMD:{{name}}(playerid, params[], help)
         return 1;
     }
     {%- endif %}
+    {% for parameter in parameters %}{% if parameter.type=='player' -%}
+    if(!IsPlayerConnected({{parameter.name}}))
+    {
+        SendInvalidPlayerMessage(playerid);
+        return 1;
+    }
+    {% endif %}{% endfor %}
 
     //command body
     command_{{name}}_Impl(playerid, {% for parameter in parameters %}{{parameter.name}}{{ ", " if not loop.last }}{% endfor %})
