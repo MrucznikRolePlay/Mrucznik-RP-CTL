@@ -15,7 +15,7 @@ env = Environment(
 def generate_code(args):
     if os.path.exists('modules'):
         with cd('modules'):
-            generate_from_template('modules.pwn.jinja2', generate_modules(), 'modules.pwn', True)
+            generate_from_template('modules.pwn.jinja2', generate_modules(), 'modules.pwn', force=True)
         print('Moduły zostały poprawnie wygenerowane.')
     elif os.path.exists('module.json'):
         generate_module()
@@ -77,7 +77,7 @@ def generate_modules_inc():
                 with open('module.json') as module_file:
                     data = json.load(module_file)
                     modules.append(data['name'])
-    generate_from_template('modules.pwn.jinja2', {'modules': modules}, 'modules.pwn', True)
+    generate_from_template('modules.pwn.jinja2', {'modules': modules}, 'modules.pwn', force=True)
 
 
 def generate_commands_inc():

@@ -1,7 +1,16 @@
 groups = [
     {'name': 'everyone'},
-    {'name': 'admin'},
-    {'name': 'lspd'}
+    {'name': 'admini'},
+    {'name': 'frakcja_LSPD'},
+    {'name': 'frakcja_FBI'},
+    {'name': 'frakcja_SASP'},
+    {'name': 'frakcja_LSMC'},
+    {'name': 'frakcja_USSS'},
+    {'name': 'frakcja_HA'},
+    {'name': 'frakcja_SAN'},
+    {'name': 'frakcja_KT'},
+    {'name': 'frakcja_GOV'},
+    {'name': 'frakcja_LSFD'}
 ]
 
 parameterTypes = [
