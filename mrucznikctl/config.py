@@ -33,9 +33,9 @@ parameterDefaultDescriptions = {
 }
 
 
-def getDefaultParameterName(param):
+def get_default_parameter_name(param):
     return parameterDefaultNames.get(param, '')
 
 
-def getDefaultParameterDescription(param):
+def get_default_parameter_description(param):
     return parameterDefaultDescriptions.get(param, '')

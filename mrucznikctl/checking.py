@@ -1,13 +1,14 @@
 import os
 import json
 
+
 def check_configuration(args):
     assert(os.path.isdir('./modules'))
     assert(os.path.exists('./modules/modules.json'))
     # all modules in modules.json check
     with open('./modules/modules.json') as modules_json:
-        jsonData = json.load(modules_json)
-        for modules in jsonData['modules']:
+        json_data = json.load(modules_json)
+        for modules in json_data['modules']:
             module_name = modules['name']
             module_filename = './modules/{0}/{0}.json'.format(module_name)
             assert(os.path.isdir('./modules/{}'.format(module_name)))

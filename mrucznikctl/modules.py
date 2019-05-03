@@ -43,12 +43,12 @@ def create_module(args):
     print('Uruchamiam generator modułu...')
     generate_module(answers)
 
-    if want_commands == True:
+    if want_commands:
         answers['commands'] = []
-        next = True
-        while next:
+        next_element = True
+        while next_element:
             answers['commands'].append(create_command(args)['name'])
-            next = prompt([{
+            next_element = prompt([{
                 'type': 'confirm',
                 'name': 'next',
                 'message': 'Czy chcesz dodać kolejną komendę?'

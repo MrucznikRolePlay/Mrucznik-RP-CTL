@@ -2,7 +2,7 @@ import os
 import json
 from PyInquirer import prompt
 
-from mrucznikctl.config import groups, parameterTypes, getDefaultParameterDescription, getDefaultParameterName
+from mrucznikctl.config import groups, parameterTypes, get_default_parameter_description, get_default_parameter_name
 from mrucznikctl.validators import NameValidator, VariableValidator
 
 
@@ -14,10 +14,10 @@ def create_command(args):
     if not os.path.exists(command['name']):
         os.mkdir(command['name'])
 
-    commandName = '{0}/{0}.json'.format(command['name'])
-    with open(commandName, 'w') as file:
+    command_name = '{0}/{0}.json'.format(command['name'])
+    with open(command_name, 'w') as file:
         json.dump(command, file, indent=4)
-    print('Komenda pomyślnie utworzona jako plik {}'.format(commandName))
+    print('Komenda pomyślnie utworzona jako plik {}'.format(command_name))
 
     return command
 
@@ -55,7 +55,7 @@ def command_creator():
 
     answers = prompt(questions)
 
-    if (answers['aliases'] == True):
+    if answers['aliases']:
         answers['aliases'] = command_aliases()
     else:
         answers['aliases'] = []
@@ -68,7 +68,7 @@ def command_creator():
         }])
     )
 
-    if (answers['parameters'] == True):
+    if answers['parameters']:
         answers['parameters'] = command_parameters()
     else:
         answers['parameters'] = []
@@ -78,8 +78,8 @@ def command_creator():
 
 def command_aliases():
     aliases = []
-    next = True
-    while next:
+    next_element = True
+    while next_element:
         questions = [
             {
                 'type': 'input',
@@ -94,7 +94,7 @@ def command_aliases():
             }
         ]
         answers = prompt(questions)
-        next = answers.pop('next')
+        next_element = answers.pop('next')
         aliases.append(answers['alias'])
 
     return aliases
@@ -102,8 +102,8 @@ def command_aliases():
 
 def command_parameters():
     parameters = []
-    next = True
-    while next:
+    next_element = True
+    while next_element:
         answers = prompt(
             {
                 'type': 'list',
@@ -120,7 +120,7 @@ def command_parameters():
                     'type': 'input',
                     'name': 'size',
                     'message': 'Wpisz rozmiar ciągu znaków:',
-                    'default': getDefaultParameterDescription(answers['type'])
+                    'default': get_default_parameter_description(answers['type'])
                 }
             )
 
@@ -129,7 +129,7 @@ def command_parameters():
                 'type': 'input',
                 'name': 'name',
                 'message': 'Wpisz nazwę parametru:',
-                'default': getDefaultParameterName(answers['type']),
+                'default': get_default_parameter_name(answers['type']),
                 'validate': VariableValidator
             }
         )
@@ -138,7 +138,7 @@ def command_parameters():
                 'type': 'input',
                 'name': 'description',
                 'message': 'Wpisz opis parametru:',
-                'default': getDefaultParameterDescription(answers['type'])
+                'default': get_default_parameter_description(answers['type'])
             }
         )
         questions.append(
@@ -151,7 +151,7 @@ def command_parameters():
 
         answers.update(prompt(questions))
 
-        if (answers.pop('default') == True):
+        if answers.pop('default'):
             answers.update(prompt([
                 {
                     'type': 'input',
@@ -167,7 +167,7 @@ def command_parameters():
                 'message': 'Dodać następny parametr?'
             }
         ]))
-        next = answers.pop('next')
+        next_element = answers.pop('next')
         parameters.append(answers)
 
     return parameters

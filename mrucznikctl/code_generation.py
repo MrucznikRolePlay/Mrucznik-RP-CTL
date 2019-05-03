@@ -1,19 +1,19 @@
 import json
 import os
 from jinja2 import Environment, PackageLoader
-
 from mrucznikctl.config import parameterVariablePrefixes, parameterSymbols
 
 env = Environment(
     loader=PackageLoader('mrucznikctl', 'templates')
 )
 
+
 # --- entrypoint ---
 def generate_code(args):
     with open('kick.json') as commandFile:
-        commandJson = json.load(commandFile)
-        prepareParameters(commandJson['parameters'])
-        generate_command(commandJson)
+        command_json = json.load(commandFile)
+        prepare_parameters(command_json['parameters'])
+        generate_command(command_json)
     print('Komenda poprawnie wygenerowana')
 
 
@@ -44,23 +44,23 @@ def generate_commands_inc():
     print('generate command')
 
 
-def prepareParameters(parameters):
+def prepare_parameters(parameters):
     for parameter in parameters:
-        parameter['variable'] = generateParameterVariableName(parameter)
-        parameter['symbol'] = generateParameterSymbol(parameter)
+        parameter['variable'] = generate_parameter_variable_name(parameter)
+        parameter['symbol'] = generate_parameter_symbol(parameter)
 
 
-def generateParameterVariableName(parameter):
-    paramPrefix = parameterVariablePrefixes.get(parameter['type'], '')
-    if ('size' in parameter):
-        return "{}{}[{}]".format(paramPrefix, parameter['name'], parameter['size'])
-    return "{}{}".format(paramPrefix, parameter['name'])
+def generate_parameter_variable_name(parameter):
+    param_prefix = parameterVariablePrefixes.get(parameter['type'], '')
+    if 'size' in parameter:
+        return "{}{}[{}]".format(param_prefix, parameter['name'], parameter['size'])
+    return "{}{}".format(param_prefix, parameter['name'])
 
 
-def generateParameterSymbol(parameter):
+def generate_parameter_symbol(parameter):
     symbol = parameterSymbols[parameter['type']]
-    if ('defaultValue' in parameter):
+    if 'defaultValue' in parameter:
         symbol = '{}({})'.format(symbol.upper(), parameter['defaultValue'])
-    if ('size' in parameter):
+    if 'size' in parameter:
         symbol = '{}[{}]'.format(symbol, parameter['size'])
     return symbol

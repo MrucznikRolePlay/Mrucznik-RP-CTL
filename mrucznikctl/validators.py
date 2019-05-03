@@ -1,6 +1,7 @@
 import regex
 from PyInquirer import Validator, ValidationError
 
+
 class NameValidator(Validator):
     def validate(self, document):
         ok = regex.match('^[a-z_]*$', document.text)
