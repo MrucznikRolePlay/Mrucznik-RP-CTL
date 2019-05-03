@@ -6,7 +6,8 @@ from mrucznikctl.cd import cd
 from mrucznikctl.config import parameterVariablePrefixes, parameterSymbols
 
 env = Environment(
-    loader=PackageLoader('mrucznikctl', 'templates')
+    loader=PackageLoader('mrucznikctl', 'templates'),
+    autoescape=False
 )
 
 
