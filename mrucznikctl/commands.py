@@ -4,8 +4,10 @@ import json
 import getpass
 from PyInquirer import prompt
 
+from mrucznikctl.cd import cd
+from mrucznikctl.code_generation import generate_command, generate_commands_inc
 from mrucznikctl.config import groups, parameterTypes, get_default_parameter_description, get_default_parameter_name
-from mrucznikctl.validators import NameValidator, VariableValidator
+from mrucznikctl.validators import NameValidator, VariableValidator, ComponentNameValidator
 
 
 # --- entry point ---
@@ -13,15 +15,18 @@ def create_command(args):
     print('Witaj w narzędziu tworzącym komendę dla mapy Mrucznik Role Play')
 
     command = command_creator()
+    os.mkdir(command['name'])
 
-    if not os.path.exists(command['name']):
-        os.mkdir(command['name'])
+    with cd(command['name']):
+        with open('command.json', 'w') as file:
+            json.dump(command, file, indent=4, ensure_ascii=False)
+        print('Komenda pomyślnie utworzona jako plik {0}/command.json'.format(command['name']))
 
-    command_name = '{0}/command.json'.format(command['name'])
-    with open(command_name, 'w') as file:
-        json.dump(command, file, indent=4, ensure_ascii=False)
-    print('Komenda pomyślnie utworzona jako plik {}'.format(command_name))
+        if args.build:
+            generate_command()
 
+    if args.build:
+        generate_commands_inc()
     return command
 
 
@@ -32,7 +37,7 @@ def command_creator():
             'type': 'input',
             'name': 'name',
             'message': 'Jak ma nazywać się komenda?',
-            'validate': NameValidator
+            'validate': ComponentNameValidator
         },
         {
             'type': 'input',

@@ -19,8 +19,13 @@ def main():
     # options
     parser_create_module = subparser_create.add_parser('module', help='- tworzy moduł')
     parser_create_module.set_defaults(func=create_module)
+    parser_create_module.add_argument('--build', dest='build', action='store_true',
+                                      help='czy od razu budować moduł?', default=False)
+
     parser_create_command = subparser_create.add_parser('command', help='- tworzy nową komendę')
     parser_create_command.set_defaults(func=create_command)
+    parser_create_command.add_argument('--build', dest='build', action='store_true',
+                                       help='czy od razu budować komendę?', default=False)
 
     # --- build ---
     parser_build = subparsers.add_parser('build', description='Generuje kod na podstawie plików json.',
@@ -58,7 +63,8 @@ def main():
 #   - include "command_impl.pwn";
 #   - command_Init() - do zainicjowania uprawnień komendy i aliasów
 #   - command_PlayerInit() - opcjonalnie
-#   - YCMD:command - zawierająca pobieranie parametrów przez sscanf oraz zawierającą wywołanie funkcji z pliku command_impl.pwn oraz wszelkie komunikaty itd.
+#   - YCMD:command - zawierająca pobieranie parametrów przez sscanf
+#   oraz zawierającą wywołanie funkcji z pliku command_impl.pwn oraz wszelkie komunikaty itd.
 # - command_impl.pwn - wygenerowana funkcja command_run(playerid, parametry)
 
 # generator modułów dodatkowo dodaje:

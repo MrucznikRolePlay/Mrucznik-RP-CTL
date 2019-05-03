@@ -18,18 +18,18 @@ def generate_code(args):
             generate_from_template('modules.pwn.jinja2', generate_modules(), 'modules.pwn', True)
         print('Moduły zostały poprawnie wygenerowane.')
     elif os.path.exists('module.json'):
-        generate_module('module.json')
+        generate_module()
         print('Moduł został poprawnie wygenerowany.')
     elif os.path.exists('command.json'):
-        generate_command('command.json')
+        generate_command()
         print('Komenda została poprawnie wygenerowana.')
     else:
         print('Nie znajdujesz się w katalogu z plikiem command.json lub module.json')
 
 
 # --- functions ---
-def generate_command(file):
-    with open(file) as command_file:
+def generate_command():
+    with open('command.json') as command_file:
         data = json.load(command_file)
         prepare_parameters(data['parameters'])
         command_name = data['name']
@@ -39,8 +39,8 @@ def generate_command(file):
         return command_name
 
 
-def generate_module(file):
-    with open(file) as module_file:
+def generate_module():
+    with open('module.json') as module_file:
         data = json.load(module_file)
         print('Generowanie plików modułu {}'.format(data['name']))
 
@@ -51,11 +51,12 @@ def generate_module(file):
         if data['commands']:
             print('Generowanie komend:')
             commands = []
-            for r, d, f in os.walk('commands'):
-                if 'command.json' in f:
-                    with cd(r):
-                        commands.append(generate_command('command.json'))
-            generate_commands_inc({'commands': commands})
+            with cd('commands'):
+                for r, d, f in os.walk('.'):
+                    if 'command.json' in f:
+                        with cd(r):
+                            commands.append(generate_command())
+                generate_from_template('commands.pwn.jinja2', {'commands': commands}, 'commands.pwn', force=True)
         return data['name']
 
 
@@ -64,13 +65,30 @@ def generate_modules():
     for r, d, f in os.walk('.'):
         if 'module.json' in f:
             with cd(r):
-                modules.append(generate_module('module.json'))
+                modules.append(generate_module())
     return {'modules': modules}
 
 
-def generate_commands_inc(data):
-    with cd('commands'):
-        generate_from_template('commands.pwn.jinja2', data, 'commands.pwn', force=True)
+def generate_modules_inc():
+    modules = []
+    for r, d, f in os.walk('.'):
+        if 'module.json' in f:
+            with cd(r):
+                with open('module.json') as module_file:
+                    data = json.load(module_file)
+                    modules.append(data['name'])
+    generate_from_template('modules.pwn.jinja2', {'modules': modules}, 'modules.pwn', True)
+
+
+def generate_commands_inc():
+    commands = []
+    for r, d, f in os.walk('.'):
+        if 'module.json' in f:
+            with cd(r):
+                with open('module.json') as command_file:
+                    data = json.load(command_file)
+                    commands.append(data['name'])
+    generate_from_template('commands.pwn.jinja2', {'commands': commands}, 'commands.pwn', force=True)
 
 
 def prepare_parameters(parameters):
