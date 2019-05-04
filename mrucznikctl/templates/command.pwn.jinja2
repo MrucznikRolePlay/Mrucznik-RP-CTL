@@ -24,7 +24,7 @@
 //-------<[ initialize ]>-------
 command_{{name}}()
 {
-    new command = Command_GetId({{name}})
+    new command = Command_GetID("{{name}}");
 
     //aliases
     {% for alias in aliases %}Command_AddAlt(command, "{{alias}}");
@@ -43,11 +43,9 @@ YCMD:{{name}}(playerid, params[], help)
         sendTipMessage(playerid, "{{description}}");
         return 1;
     }
-
-    {% if parameters -%}
-    //fetching params
+    {% if parameters -%}//fetching params
     new {% for parameter in parameters %}{{parameter.variable}}{{ ", " if not loop.last }}{% endfor %};
-    if(sscanf(params, "{% for parameter in parameters %}{{parameter.symbol}}{% endfor %}", {% for parameter in parameters %}{{parameter.name}}{{ ", " if not loop.last }}{% endfor %}))
+    if(sscanf(params, "{% for parameter in parameters %}{{parameter.symbol}}{% endfor %}"{% for parameter in parameters %}, {{parameter.name}}{% endfor %}))
     {
         sendTipMessage(playerid, "Użyj /{{name}} {% for parameter in parameters %}[{{parameter.description}}{% if defaultValue -%} ({{defaultValue}}){%- endif %}] {% endfor %}");
         return 1;
@@ -58,10 +56,8 @@ YCMD:{{name}}(playerid, params[], help)
     {
         sendErrorMessage(playerid, "Nie znaleziono gracza o nicku/id podanym w parametrze");
         return 1;
-    }
-    {% endif %}{% endfor %}
-
+    }{% endif %}{% endfor %}
     //command body
-    command_{{name}}_Impl(playerid, {% for parameter in parameters %}{{parameter.name}}{{ ", " if not loop.last }}{% endfor %})
+    command_{{name}}_Impl(playerid{% for parameter in parameters %}, {{parameter.name}}{% endfor %});
     return 1;
 }

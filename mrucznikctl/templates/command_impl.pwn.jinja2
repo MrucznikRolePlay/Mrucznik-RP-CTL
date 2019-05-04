@@ -23,9 +23,7 @@
 //
 
 //------------------<[ Implementacja: ]>-------------------
-command_{{name}}_Impl(playerid, {% for parameter in parameters %}{{parameter.name}}{{ ", " if not loop.last }}{% endfor %})
-{
-    //TODO: uzupełnij działanie komendy
-}
+command_{{name}}_Impl(playerid{% set comma = joiner(",") %}{% for parameter in parameters %}, {{parameter.name}}{% endfor %})
+{% for line in code %}{{line}}{% endfor %}
 
 //end

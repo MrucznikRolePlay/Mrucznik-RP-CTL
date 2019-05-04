@@ -34,9 +34,13 @@ def generate_command():
         prepare_parameters(data['parameters'])
         command_name = data['name']
 
-        force = True if 'custom' in data else False
+        # if os.path.exists('{0}.xd'.format(command_name)):
+        #     with open('{0}.xd'.format(command_name)) as f:
+        #         data['code'] = f.readlines()
+
+        force = False if 'custom' in data else True
         generate_from_template('command.pwn.jinja2', data, '{0}.pwn'.format(command_name), force)
-        generate_from_template('command_impl.pwn.jinja2', data, '{0}_impl.pwn'.format(command_name))
+        generate_from_template('command_impl.pwn.jinja2', data, '{0}_impl.pwn'.format(command_name), True)
         return command_name
 
 
@@ -58,7 +62,7 @@ def generate_module():
                         with cd(r):
                             commands.append(generate_command())
                 generate_from_template('commands.pwn.jinja2', {'commands': commands}, 'commands.pwn', force=True)
-        return data['name']
+        return data
 
 
 def generate_modules():
@@ -77,7 +81,7 @@ def generate_modules_inc():
             with cd(r):
                 with open('module.json') as module_file:
                     data = json.load(module_file)
-                    modules.append(data['name'])
+                    modules.append(data)
     generate_from_template('modules.pwn.jinja2', {'modules': modules}, 'modules.pwn', force=True)
 
 
