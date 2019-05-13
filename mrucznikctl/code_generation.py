@@ -40,7 +40,7 @@ def generate_command():
 
         force = False if 'custom' in data else True
         generate_from_template('command.pwn.jinja2', data, '{0}.pwn'.format(command_name), force)
-        generate_from_template('command_impl.pwn.jinja2', data, '{0}_impl.pwn'.format(command_name), True)
+        generate_from_template('command_impl.pwn.jinja2', data, '{0}_impl.pwn'.format(command_name))
         return command_name
 
 
