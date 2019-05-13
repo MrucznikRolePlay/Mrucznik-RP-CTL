@@ -33,7 +33,7 @@
 //-------<[ initialize ]>-------
 command_{{name}}()
 {
-    new command = Command_GetID("{{name}}");
+    {% if aliases or permissions %}new command = Command_GetID("{{name}}");{% endif %}
 
     //aliases
     {% for alias in aliases %}Command_AddAlt(command, "{{alias}}");
