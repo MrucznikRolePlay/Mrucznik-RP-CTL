@@ -67,6 +67,5 @@ YCMD:{{name}}(playerid, params[], help)
         return 1;
     }{% endif %}{% endfor %}
     //command body
-    command_{{name}}_Impl(playerid{% for parameter in parameters %}, {{parameter.name}}{% endfor %});
-    return 1;
+    return command_{{name}}_Impl(playerid{% for parameter in parameters %}, {{parameter.name}}{% endfor %});
 }
