@@ -53,16 +53,16 @@ def generate_module():
         generate_from_template('module.hwn.jinja2', data, '{}.hwn'.format(data['name']))
         generate_from_template('module.pwn.jinja2', data, '{}.pwn'.format(data['name']))
 
-        if data['callbacks']:
+        if data.get('callbacks', False):
             generate_from_template('module_callbacks.pwn.jinja2', data, '{}_callbacks.pwn'.format(data['name']))
-        if data['timers']:
+        if data.get('timers', False):
             generate_from_template('module_timers.pwn.jinja2', data, '{}_timers.pwn'.format(data['name']))
-        if data['mysql']:
+        if data.get('mysql', False):
             generate_from_template('module_mysql.pwn.jinja2', data, '{}_mysql.pwn'.format(data['name']))
-        for file in data['files']:
+        for file in data.get('files', []):
             generate_from_template('module.pwn.jinja2', data, file)
 
-        if data['commands']:
+        if data.get('commands', False):
             print('Generowanie komend:')
             commands = []
             with cd('commands'):
