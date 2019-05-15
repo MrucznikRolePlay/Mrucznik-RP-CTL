@@ -62,27 +62,27 @@ def create_module(args):
     answers = prompt(questions)
     answers['date'] = datetime.datetime.now().strftime("%d.%m.%Y")
 
+    custom_files = []
+    if answers['files']:
+        next_element = True
+        while next_element:
+            custom_files.append(prompt([{
+                'type': 'input',
+                'name': 'file',
+                'message': 'Wpisz nazwę dodatkowego pliku razem z rozszerzeniem:'
+            }])['file'])
+            next_element = prompt([{
+                'type': 'confirm',
+                'name': 'next',
+                'message': 'Czy chcesz dodać kolejny plik?'
+            }])['next']
+    answers['files'] = custom_files
+
     os.mkdir(answers['name'])
     with cd(answers['name']):
         with open('module.json', 'w') as file:
             json.dump(answers, file, indent=4, ensure_ascii=False)
             print('Moduł pomyślnie utworzony jako plik module.json')
-
-        files = []
-        if answers.pop('files'):
-            next_element = True
-            while next_element:
-                files.append(prompt([{
-                    'type': 'input',
-                    'name': 'file',
-                    'message': 'Wpisz nazwę dodatkowego pliku razem z rozszerzeniem:'
-                }])['file'])
-                next_element = prompt([{
-                    'type': 'confirm',
-                    'name': 'next',
-                    'message': 'Czy chcesz dodać kolejny plik?'
-                }])['next']
-        answers['files'] = files
 
         if answers.pop('commands'):
             os.mkdir('commands')
