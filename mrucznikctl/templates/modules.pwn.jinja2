@@ -39,6 +39,22 @@
 {% for module in modules %}#include "{{module.name}}\{{module.name}}.pwn"
 {% endfor %}
 
+//-------<[ timers ]>-------
+{% for module in modules %}{% if module.timers -%}#include "{{module.name}}\{{module.name}}_timers.pwn"
+{% endif %}{% endfor %}
+
+//-------<[ mysql ]>-------
+{% for module in modules %}{% if module.mysql -%}#include "{{module.name}}\{{module.name}}_mysql.pwn"
+{% endif %}{% endfor %}
+
+//-------<[ others ]>-------
+{% for module in modules %}{% if module.files -%}{% for file in module.files %}#include "{{ file }}"
+{% endfor %}{% endif %}{% endfor %}
+
+//-------<[ callbacks ]>-------
+{% for module in modules %}{% if module.callbacks -%}#include "{{module.name}}\{{module.name}}_callbacks.pwn"
+{% endif %}{% endfor %}
+
 //-------<[ commands ]>-------
 {% for module in modules %}{% if module.commands -%}#include "{{module.name}}\commands\{{module.name}}_commands.pwn"
 {% endif %}{% endfor %}

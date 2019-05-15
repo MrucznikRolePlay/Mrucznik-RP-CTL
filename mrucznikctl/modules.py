@@ -34,6 +34,26 @@ def create_module(args):
         },
         {
             'type': 'confirm',
+            'name': 'timers',
+            'message': 'Czy moduł będzie posiadał timery?'
+        },
+        {
+            'type': 'confirm',
+            'name': 'callbacks',
+            'message': 'Czy moduł posiadał callbacki?'
+        },
+        {
+            'type': 'confirm',
+            'name': 'mysql',
+            'message': 'Czy moduł będzie korzystał z mysql?'
+        },
+        {
+            'type': 'confirm',
+            'name': 'files',
+            'message': 'Czy moduł będzie posiadał dodatkowe pliki?'
+        },
+        {
+            'type': 'confirm',
             'name': 'commands',
             'message': 'Czy chcesz dodać komendy do modułu?'
         }
@@ -47,6 +67,22 @@ def create_module(args):
         with open('module.json', 'w') as file:
             json.dump(answers, file, indent=4, ensure_ascii=False)
             print('Moduł pomyślnie utworzony jako plik module.json')
+
+        files = []
+        if answers.pop('files'):
+            next_element = True
+            while next_element:
+                files.append(prompt([{
+                    'type': 'input',
+                    'name': 'file',
+                    'message': 'Wpisz nazwę dodatkowego pliku razem z rozszerzeniem:'
+                }])['file'])
+                next_element = prompt([{
+                    'type': 'confirm',
+                    'name': 'next',
+                    'message': 'Czy chcesz dodać kolejny plik?'
+                }])['next']
+        answers['files'] = files
 
         if answers.pop('commands'):
             os.mkdir('commands')
