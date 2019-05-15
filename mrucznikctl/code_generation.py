@@ -61,7 +61,8 @@ def generate_module():
                     if 'command.json' in f:
                         with cd(r):
                             commands.append(generate_command())
-                generate_from_template('commands.pwn.jinja2', {'commands': commands}, 'commands.pwn', force=True)
+                generate_from_template('commands.pwn.jinja2', {'commands': commands},
+                                       '{}_commands.pwn'.format(data['name']), force=True)
         return data
 
 

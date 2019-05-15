@@ -40,5 +40,5 @@
 {% endfor %}
 
 //-------<[ commands ]>-------
-{% for module in modules %}{% if module.commands -%}#include "{{module.name}}\commands\commands.pwn"
+{% for module in modules %}{% if module.commands -%}#include "{{module.name}}\commands\{{module.name}}_commands.pwn"
 {% endif %}{% endfor %}
