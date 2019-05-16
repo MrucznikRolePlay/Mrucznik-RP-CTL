@@ -7,7 +7,7 @@ Command line tool for generating code for Mrucznik Role Play gamemode
 
 Simply run:
 
-    $ pip install .
+    $ pip install --editable .
 
 
 # Usage
