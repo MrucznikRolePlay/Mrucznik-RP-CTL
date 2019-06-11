@@ -24,6 +24,8 @@
 
 //------------------<[ Implementacja: ]>-------------------
 command_{{name}}_Impl(playerid{% set comma = joiner(",") %}{% for parameter in parameters %}, {{parameter.variable}}{% endfor %})
-{% for line in code %}{{line}}{% endfor %}
+{% for line in code %}{{line}}{% endfor %}{
+    return 1;
+}
 
 //end
