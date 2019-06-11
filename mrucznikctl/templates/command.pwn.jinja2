@@ -44,7 +44,7 @@ command_{{name}}()
     {% endfor %}
 
     //prefix
-    {% if prefix %}Command_SetPrefix(command, "{{ prefix }}");{% endif %}
+    {% if prefix %}Command_SetPrefix(command, '{{ prefix }}');{% endif %}
 }
 
 //-------<[ command ]>-------
