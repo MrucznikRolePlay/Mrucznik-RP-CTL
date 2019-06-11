@@ -33,7 +33,7 @@
 //-------<[ initialize ]>-------
 command_{{name}}()
 {
-    {% if aliases or permissions %}new command = Command_GetID("{{name}}");{% endif %}
+    {% if aliases or permissions or prefix %}new command = Command_GetID("{{name}}");{% endif %}
 
     //aliases
     {% for alias in aliases %}Command_AddAlt(command, "{{alias}}");
@@ -42,6 +42,9 @@ command_{{name}}()
     //permissions
     {% for permission in permissions %}{% if permission=='everyone' -%}Group_SetGlobalCommand(command, true);{% else %}Group_SetCommand(Group_GetID("{{permission}}"), command, true);{% endif %}
     {% endfor %}
+
+    //prefix
+    {% if prefix %}Command_SetPrefix(command, "{{ prefix }}");{% endif %}
 }
 
 //-------<[ command ]>-------
