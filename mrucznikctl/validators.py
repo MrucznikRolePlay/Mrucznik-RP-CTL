@@ -27,7 +27,7 @@ class ComponentNameValidator(Validator):
 
 class VariableValidator(Validator):
     def validate(self, document):
-        ok = regex.match('^[a-z0-9_]*$', document.text)
+        ok = regex.match('^[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$', document.text)
         if not ok:
             raise ValidationError(
                 message='Nazwa zmiennej musi być w formacie camelCase',
