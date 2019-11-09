@@ -40,8 +40,7 @@ command_{{name}}()
     {% endfor %}
 
     //permissions
-    {% for permission in permissions %}{% if permission=='everyone' -%}Group_SetGlobalCommand(command, true);{% else %}Group_SetCommand(Group_GetID("{{permission}}"), command, true);{% endif %}
-    {% endfor %}
+    {% for permission in permissions %}{% if permission.type=='everyone' -%}Group_SetGlobalCommand(command, true);{% endif %}{% endfor %}
 
     //prefix
     {% if prefix %}Command_SetPrefix(command, '{{ prefix }}');{% endif %}
@@ -69,6 +68,22 @@ YCMD:{{name}}(playerid, params[], help)
         sendErrorMessage(playerid, "Nie znaleziono gracza o nicku/id podanym w parametrze.");
         return 1;
     }{% endif %}{% endfor %}
+    //permissions
+    {% for permission in permissions %}{% if permission.type=='admin' -%}if(PlayerInfo[playerid][pAdmin] < {{ permission.level }})
+    {
+        noAccessMessage(playerid);
+        return 1;
+    }{% endif %}{% if permission.type=='rcon' %}if(!IsPlayerAdmin(playerid))
+    {
+        noAccessMessage(playerid);
+        return 1;
+    }{% endif %}{% if permission.type=='frakcja' %}if(!({% for id in permission.level %}GetPlayerFraction(playerid) == {{ id }}{{ " || " if not loop.last }}{% endfor %}))
+    {
+        noAccessMessage(playerid);
+        return 1;
+    }{% endif %}
+    {% endfor %}
+
     //command body
     return command_{{name}}_Impl(playerid{% for parameter in parameters %}, {{parameter.name}}{% endfor %});
 }

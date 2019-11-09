@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# coding=<utf-8>
+
 from argparse import ArgumentParser
 
 from mrucznikctl.code_generation import generate_code

@@ -6,7 +6,8 @@ from PyInquirer import prompt
 
 from mrucznikctl.cd import cd
 from mrucznikctl.code_generation import generate_command, generate_commands_inc
-from mrucznikctl.config import groups, parameterTypes, get_default_parameter_description, get_default_parameter_name
+from mrucznikctl.config import groups, parameterTypes, get_default_parameter_description, get_default_parameter_name, \
+    fractions, fraction_ids
 from mrucznikctl.validators import NameValidator, VariableValidator, ComponentNameValidator
 
 
@@ -48,8 +49,41 @@ def command_creator():
             'type': 'checkbox',
             'name': 'permissions',
             'message': 'Wybierz, które grupy mają mieć dostęp do komendy:',
-            'choices': groups
+            'choices': groups,
+            'validate': lambda answer: 'Musisz wybrac przynajmniej jedno uprawnienie.' if len(answer) == 0 else True
         },
+    ]
+    answers = prompt(questions)
+
+    # permissions
+    new_permissions = []
+    for permission in answers['permissions']:
+        if permission == 'admin':
+            new_permissions.append({
+                'type': permission,
+                'level': int(prompt([
+                    {
+                        'type': 'input',
+                        'name': 'level',
+                        'message': 'Wpisz admin level, od którego będzie dostępna komenda:'
+                    }
+                ])['level'])
+            })
+        elif permission == 'frakcja':
+            new_permissions.append({
+                'type': permission,
+                'level': map_fraction_names_to_ids(prompt([
+                    {
+                        'type': 'checkbox',
+                        'name': 'fractions',
+                        'message': 'Jakie frakcje będą miały dostęp do komendy?',
+                        'choices': fractions
+                    }
+                ])['fractions'])
+            })
+    answers['permissions'] = new_permissions
+
+    answers.update(prompt([
         {
             'type': 'input',
             'name': 'author',
@@ -61,9 +95,7 @@ def command_creator():
             'name': 'aliases',
             'message': 'Czy komenda będzie miała dodatkowe aliasy?'
         }
-    ]
-
-    answers = prompt(questions)
+    ]))
 
     if answers['aliases']:
         answers['aliases'] = command_aliases()
@@ -182,3 +214,10 @@ def command_parameters():
         parameters.append(answers)
 
     return parameters
+
+
+def map_fraction_names_to_ids(fractions):
+    ret = []
+    for fraction in fractions:
+        ret.append(fraction_ids[fraction])
+    return ret
