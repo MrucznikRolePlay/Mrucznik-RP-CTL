@@ -18,10 +18,10 @@ To use it:
 
 ### Examples:
 - Generate code
-    $ mrucznikctl build
+    `$ mrucznikctl build`
 - Create module
-    $ mrucznikctl create module
+    `$ mrucznikctl create module`
 - Create command
-    $ mrucznikctl create command
+    `$ mrucznikctl create command`
 - Create command & build
-    $ mrucznikctl create command --build
+    `$ mrucznikctl create command --build`
