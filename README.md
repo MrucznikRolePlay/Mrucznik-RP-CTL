@@ -16,3 +16,12 @@ To use it:
 
     $ mrucznikctl --help
 
+### Examples:
+- Generate code
+    $ mrucznikctl build
+- Create module
+    $ mrucznikctl create module
+- Create command
+    $ mrucznikctl create command
+- Create command & build
+    $ mrucznikctl create command --build
