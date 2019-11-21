@@ -25,3 +25,7 @@ To use it:
     `$ mrucznikctl create command`
 - Create command & build
     `$ mrucznikctl create command --build`
+
+### Tips
+- Create commands in module directory
+- Create modules in modules directory
