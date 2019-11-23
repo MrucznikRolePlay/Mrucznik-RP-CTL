@@ -27,5 +27,5 @@ To use it:
     `$ mrucznikctl create command --build`
 
 ### Tips
-- Create commands in module directory
+- Create commands in \[module name\]/commands directory
 - Create modules in modules directory
