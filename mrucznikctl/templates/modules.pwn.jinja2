@@ -48,7 +48,7 @@
 {% endif %}{% endfor %}
 
 //-------<[ others ]>-------
-{% for module in modules %}{% if module.files -%}{% for file in module.files %}#include "{{ file }}"
+{% for module in modules %}{% if module.files -%}{% for file in module.files %}#include "{{module.name}}\{{ file }}"
 {% endfor %}{% endif %}{% endfor %}
 
 //-------<[ callbacks ]>-------
