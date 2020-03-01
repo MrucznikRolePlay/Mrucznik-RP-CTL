@@ -29,7 +29,7 @@ def generate_code(args):
 
 # --- functions ---
 def generate_command():
-    with open('command.json') as command_file:
+    with open('command.json', encoding='windows-1250') as command_file:
         data = json.load(command_file)
         prepare_parameters(data['parameters'])
         command_name = data['name']
@@ -45,7 +45,7 @@ def generate_command():
 
 
 def generate_module():
-    with open('module.json') as module_file:
+    with open('module.json', encoding='windows-1250') as module_file:
         data = json.load(module_file)
         print('Generowanie plików modułu {}'.format(data['name']))
 

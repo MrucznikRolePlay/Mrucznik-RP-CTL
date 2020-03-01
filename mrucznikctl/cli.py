@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# coding=<utf-8>
+
 from argparse import ArgumentParser
 
 from mrucznikctl.code_generation import generate_code
@@ -10,12 +13,12 @@ def main():
     # create the top-level parser
     parser = ArgumentParser(prog='mrucznikctl',
                             description="Narzędzie do generowania kodu dla gamemodu Mrucznik Role Play")
-    subparsers = parser.add_subparsers(title='Dostępne opcje:', metavar='opcja', required=True)
+    subparsers = parser.add_subparsers(title='Dostępne opcje:', metavar='opcja')
 
     # --- create ---
     opcja_create = subparsers.add_parser('create', description='Tworzenie komponentów mapy.',
                                          help='- tworzenie komponentów mapy')
-    subparser_create = opcja_create.add_subparsers(title='Dostępne komponenty', metavar='komponenty', required=True)
+    subparser_create = opcja_create.add_subparsers(title='Dostępne komponenty', metavar='komponenty')
     # options
     parser_create_module = subparser_create.add_parser('module', help='- tworzy moduł')
     parser_create_module.set_defaults(func=create_module)
