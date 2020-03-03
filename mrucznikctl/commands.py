@@ -18,7 +18,7 @@ def create_command(args):
     os.mkdir(command['name'])
 
     with cd(command['name']):
-        with open('command.json', 'w') as file:
+        with open('command.json', 'w', encoding='windows-1250') as file:
             json.dump(command, file, indent=4, ensure_ascii=False)
         print('Komenda pomyślnie utworzona jako plik {0}/command.json'.format(command['name']))
 

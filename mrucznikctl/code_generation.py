@@ -89,7 +89,7 @@ def generate_modules_inc():
     for r, d, f in os.walk('.'):
         if 'module.json' in f:
             with cd(r):
-                with open('module.json') as module_file:
+                with open('module.json', encoding='windows-1250') as module_file:
                     data = json.load(module_file)
                     modules.append(data)
     generate_from_template('modules.pwn.jinja2', {'modules': modules}, 'modules.pwn', force=True)
@@ -100,7 +100,7 @@ def generate_commands_inc():
     for r, d, f in os.walk('.'):
         if 'module.json' in f:
             with cd(r):
-                with open('module.json') as command_file:
+                with open('module.json', encoding='windows-1250') as command_file:
                     data = json.load(command_file)
                     commands.append(data['name'])
     generate_from_template('commands.pwn.jinja2', {'commands': commands}, 'commands.pwn', force=True)

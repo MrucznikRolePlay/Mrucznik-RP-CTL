@@ -80,7 +80,7 @@ def create_module(args):
 
     os.mkdir(answers['name'])
     with cd(answers['name']):
-        with open('module.json', 'w') as file:
+        with open('module.json', 'w', encoding='windows-1250') as file:
             json.dump(answers, file, indent=4, ensure_ascii=False)
             print('Moduł pomyślnie utworzony jako plik module.json')
 
