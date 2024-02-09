@@ -37,7 +37,11 @@ def main():
 
     # parse arguments
     args = parser.parse_args()
-    args.func(args)
+
+    if hasattr(args, 'func'):
+        args.func(args)
+    else:
+        parser.print_help()
 
 # struktura mapy mrucznika
 # legenda:
