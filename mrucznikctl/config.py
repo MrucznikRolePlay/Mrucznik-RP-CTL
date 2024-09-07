@@ -16,6 +16,7 @@ groups = [
 parameterTypes = [
     'player',
     'integer',
+    'hex',
     'string',
     'float',
     'character'
@@ -24,6 +25,7 @@ parameterTypes = [
 parameterSymbols = {
     'player': 'r',
     'integer': 'd',
+    'hex': 'h',
     'string': 's',
     'float': 'f',
     'character': 'c'
