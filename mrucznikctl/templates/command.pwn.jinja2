@@ -60,6 +60,8 @@ YCMD:{{name}}(playerid, params[], help)
     if(sscanf(params, "{% for parameter in parameters %}{{parameter.symbol}}{% endfor %}"{% for parameter in parameters %}, {{parameter.name}}{% endfor %}))
     {
         sendTipMessage(playerid, "Użyj /{{name}} {% for parameter in parameters %}[{{parameter.description}}{% if defaultValue -%} ({{defaultValue}}){%- endif %}] {% endfor %}");
+        {% for tip in command_tips %}sendTipMessage(playerid, "{{tip}}");
+        {% endfor -%}
         return 1;
     }
     {%- endif %}
