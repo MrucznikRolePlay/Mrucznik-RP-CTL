@@ -122,7 +122,7 @@ def generate_parameter_variable_name(parameter):
 def generate_parameter_symbol(parameter):
     symbol = parameterSymbols[parameter['type']]
     if 'defaultValue' in parameter:
-        optionalSymbol = symbol[0] + symbol.upper()[1:]
+        optionalSymbol = symbol[0].upper() + symbol[1:]
         symbol = '{}({})'.format(optionalSymbol, parameter['defaultValue'])
     if 'size' in parameter:
         symbol = '{}[{}]'.format(symbol, parameter['size'])
