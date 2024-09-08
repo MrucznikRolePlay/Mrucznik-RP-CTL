@@ -23,7 +23,7 @@ parameterTypes = [
 ]
 
 parameterSymbols = {
-    'player': 'r',
+    'player': 'k<fix>',
     'integer': 'd',
     'hex': 'h',
     'string': 's',
