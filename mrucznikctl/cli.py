@@ -3,7 +3,7 @@
 
 from argparse import ArgumentParser
 
-from mrucznikctl.code_generation import generate_code
+from mrucznikctl.code_generation import build
 from mrucznikctl.commands import create_command
 from mrucznikctl.modules import create_module
 
@@ -33,7 +33,7 @@ def main():
     # --- build ---
     parser_build = subparsers.add_parser('build', description='Generuje kod na podstawie plików json.',
                                          help='- generowanie kodu')
-    parser_build.set_defaults(func=generate_code)
+    parser_build.set_defaults(func=build)
 
     # parse arguments
     args = parser.parse_args()

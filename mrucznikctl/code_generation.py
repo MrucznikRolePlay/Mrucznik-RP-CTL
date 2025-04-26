@@ -12,6 +12,14 @@ env = Environment(
 
 
 # --- entry point ---
+def build(args):
+    if os.path.exists('gamemodes'):
+        with cd('gamemodes'):
+            generate_code(args)
+    else:
+        generate_code(args)
+
+
 def generate_code(args):
     if os.path.exists('modules'):
         with cd('modules'):
@@ -25,7 +33,6 @@ def generate_code(args):
         print('Komenda została poprawnie wygenerowana.')
     else:
         print('Nie znajdujesz się w katalogu z plikiem command.json lub module.json')
-
 
 # --- functions ---
 def generate_command():
@@ -76,11 +83,18 @@ def generate_module():
 
 
 def generate_modules():
-    modules = []
+    
+    to_generate = []
     for r, d, f in os.walk('.'):
         if 'module.json' in f:
-            with cd(r):
-                modules.append(generate_module())
+            to_generate.append(r)
+
+    modules = []
+    to_generate.sort()
+    for path in to_generate:
+        with cd(path):
+            modules.append(generate_module())
+
     return {'modules': modules}
 
 
