@@ -30,7 +30,7 @@
 #include <YSI\y_hooks>
 
 //-------<[ include ]>-------
-{% for command in commands %}#include "{{command}}\{{command}}.pwn"
+{% for command in commands %}#include "{{command}}\cmd_{{command}}.pwn"
 {% endfor %}
 
 //-------<[ initialize ]>-------
