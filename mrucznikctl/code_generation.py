@@ -73,10 +73,16 @@ def generate_module():
             print('Generowanie komend:')
             commands = []
             with cd('commands'):
+                paths = []
                 for r, d, f in os.walk('.'):
                     if 'command.json' in f:
-                        with cd(r):
-                            commands.append(generate_command())
+                        paths.append(r)
+
+                paths.sort()
+                for path in paths:
+                    with cd(path):
+                        commands.append(generate_command())
+
                 generate_from_template('commands.pwn.jinja2', {'commands': commands},
                                        '{}_commands.pwn'.format(data['name']), force=True)
         return data
@@ -84,14 +90,14 @@ def generate_module():
 
 def generate_modules():
     
-    to_generate = []
+    paths = []
     for r, d, f in os.walk('.'):
         if 'module.json' in f:
-            to_generate.append(r)
+            paths.append(r)
 
     modules = []
-    to_generate.sort()
-    for path in to_generate:
+    paths.sort()
+    for path in paths:
         with cd(path):
             modules.append(generate_module())
 
@@ -100,23 +106,34 @@ def generate_modules():
 
 def generate_modules_inc():
     modules = []
+    paths = []
     for r, d, f in os.walk('.'):
         if 'module.json' in f:
-            with cd(r):
-                with open('module.json', encoding='windows-1250') as module_file:
-                    data = json.load(module_file)
-                    modules.append(data)
+            paths.append(r)
+
+    paths.sort()
+    for path in paths:
+        with cd(path):
+            with open('module.json', encoding='windows-1250') as module_file:
+                data = json.load(module_file)
+                modules.append(data)
     generate_from_template('modules.pwn.jinja2', {'modules': modules}, 'modules.pwn', force=True)
 
 
 def generate_commands_inc():
     commands = []
+    paths = []
     for r, d, f in os.walk('.'):
         if 'module.json' in f:
-            with cd(r):
-                with open('module.json', encoding='windows-1250') as command_file:
-                    data = json.load(command_file)
-                    commands.append(data['name'])
+            paths.append(r)
+
+    paths.sort()
+    for path in paths:
+        with cd(path):
+            with open('module.json', encoding='windows-1250') as command_file:
+                data = json.load(command_file)
+                commands.append(data['name'])
+
     generate_from_template('commands.pwn.jinja2', {'commands': commands}, 'commands.pwn', force=True)
 
 
